@@ -1,0 +1,29 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model user {
+  id    Int    @id @default(autoincrement())
+  nimi  String
+  vanus Int
+  email String @unique
+  post post[]
+  position positions @default(value: BASIC)
+}
+
+model post {
+  id Int @id @default(autoincrement())
+  sisu String 
+  autor user @relation(fields: [userId], references: [id])
+  userId Int
+}
+
+enum positions {
+  ADMIN
+  BASIC
+}
